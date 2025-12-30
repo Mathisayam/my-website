@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Elevate Digital - Modern Marketing Studio</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: rgba(255,255,255,0.08);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #7c3aed;
+      --accent-2: #10b981;
+      --border: rgba(255,255,255,0.12);
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #7c3aed;
+      --accent-2: #0ea5e9;
+      --border: #e2e8f0;
+      --shadow: 0 14px 40px rgba(15,23,42,0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+    header {
+      position: sticky; top: 0; z-index: 999;
+      backdrop-filter: blur(12px);
+      background: color-mix(in srgb, var(--bg) 75%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+    nav {
+      max-width: 1200px; margin: 0 auto; padding: 14px 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .brand { font-weight: 800; letter-spacing: -0.02em; font-size: 1.1rem; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 12px; border-radius: 999px;
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--muted); font-size: 0.9rem;
+    }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; margin: 0 10px; font-weight: 600;
+      padding: 8px 10px; border-radius: 10px; transition: all 0.2s ease;
+    }
+    .nav-links a:hover { color: var(--accent); background: var(--card); }
+    .theme-toggle {
+      border: 1px solid var(--border); background: var(--card); color: var(--text);
+      border-radius: 12px; padding: 8px 12px; cursor: pointer; transition: 0.2s;
+    }
+    .theme-toggle:hover { transform: translateY(-1px); }
+    .hero {
+      max-width: 1200px; margin: 0 auto; padding: 64px 18px 40px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px;
+      align-items: center;
+    }
+    .hero h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); margin: 0 0 14px; letter-spacing: -0.03em; }
+    .gradient {
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; color: transparent;
+    }
+    .hero-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+      padding: 20px; box-shadow: var(--shadow);
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+    .btn {
+      border: none; cursor: pointer; padding: 12px 16px; border-radius: 12px;
+      font-weight: 700; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary { background: linear-gradient(120deg, var(--accent), var(--accent-2)); color: white; box-shadow: var(--shadow); }
+    .btn-ghost { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+    .btn:hover { transform: translateY(-1px); }
+    section { padding: 44px 18px; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .grid { display: grid; gap: 16px; }
+    .cards-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 16px; box-shadow: var(--shadow); transition: transform 0.2s;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .label {
+      display: inline-block; background: rgba(124,58,237,0.12); color: var(--accent);
+      padding: 6px 10px; border-radius: 10px; font-weight: 700; font-size: 0.8rem;
+    }
+    .muted { color: var(--muted); }
+    .kpi-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0; }
+    .kpi { padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); }
+    .services-icon { font-size: 1.4rem; }
+    .divider { height: 1px; background: var(--border); margin: 16px 0; }
+    .flex { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .mini { font-size: 0.92rem; }
+    .progress { width: 100%; height: 10px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .progress > div { height: 100%; background: linear-gradient(120deg, var(--accent), var(--accent-2)); width: 0; }
+    .counter { font-size: 1.6rem; font-weight: 800; }
+    .pill-badge { padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border); background: var(--card); }
+    .faq-item { border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
+    .faq-q { width: 100%; text-align: left; background: none; border: none; color: var(--text); padding: 14px; font-weight: 700; cursor: pointer; }
+    .faq-a { padding: 0 14px 14px; display: none; color: var(--muted); }
+    .show { display: block !important; }
+    .testimonials { position: relative; }
+    .testimonial { display: none; }
+    .testimonial.active { display: block; }
+    .dots { display: flex; gap: 8px; margin-top: 10px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); cursor: pointer; }
+    .dot.active { background: var(--accent); }
+    .filter-btn { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); cursor: pointer; }
+    .filter-btn.active { background: var(--accent); color: #fff; border-color: transparent; }
+    .portfolio-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .tag { font-size: 0.8rem; color: var(--accent); font-weight: 700; }
+    .form-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    input, select, textarea {
+      width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--card); color: var(--text); font-size: 1rem;
+    }
+    textarea { min-height: 120px; resize: vertical; }
+    .output-box {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 12px; word-break: break-all;
+    }
+    .timeline { position: relative; padding-left: 18px; }
+    .timeline::before {
+      content: ""; position: absolute; left: 6px; top: 0; bottom: 0; width: 2px; background: var(--border);
+    }
+    .tl-item { position: relative; padding-left: 18px; margin-bottom: 12px; }
+    .tl-item::before {
+      content: "●"; position: absolute; left: -2px; color: var(--accent); top: 0;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 10px; border-radius: 10px;
+      background: rgba(16,185,129,0.12); color: var(--accent-2);
+      font-weight: 700; font-size: 0.85rem;
+    }
+    .row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .nowrap { white-space: nowrap; }
+    @media (max-width: 640px) {
+      nav { flex-wrap: wrap; }
+      .nav-links { width: 100%; display: flex; gap: 6px; flex-wrap: wrap; }
+      .hero { padding-top: 32px; }
+    }
+  </style>
+</head>
+<body>
+  
+
+<!-- YOUR MAIN JS -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // all site JS + contact form
+  });
+</script>
+<header>
+  <nav>
+    <div class="brand">⚡ Elevate Digital</div>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#portfolio">Case Studies</a>
+      <a href="#tools">Tools</a>
+      <a href="#pricing">Calculators</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="pill">Avg ROI +3.4x</div>
+    <button class="theme-toggle" id="themeToggle">🌙</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="top">
+    <div>
+      <div class="badge">Full-funnel growth · Paid + SEO + CRO</div>
+      <h1>Digital marketing that <span class="gradient">compounds</span> your revenue.</h1>
+      <p class="muted">We plan, launch, and scale campaigns with measurable impact. Data-true, creative-forward, relentlessly optimized.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="scrollServices">Explore services</button>
+        <button class="btn btn-ghost" id="scrollContact">Book a strategy call</button>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="muted mini">Managed ad spend</div><div class="counter" data-target="720000">0</div></div>
+        <div class="kpi"><div class="muted mini">Avg CTR lift</div><div class="counter" data-target="42">0%</div></div>
+        <div class="kpi"><div class="muted mini">A/B tests run</div><div class="counter" data-target="380">0</div></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="label">Live ROI snapshot</div>
+      <p class="muted mini">Adjust inputs to estimate campaign potential.</p>
+      <div class="form-grid">
+        <div>
+          <label class="muted mini">Monthly ad spend (\$)</label>
+          <input type="number" id="spend" value="12000" min="1000">
+        </div>
+        <div>
+          <label class="muted mini">Est. CPC (\$)</label>
+          <input type="number" id="cpc" value="1.8" step="0.1" min="0.2">
+        </div>
+        <div>
+          <label class="muted mini">Conv. rate (%)</label>
+          <input type="number" id="cvr" value="3.2" step="0.1" min="0.2">
+        </div>
+        <div>
+          <label class="muted mini">Avg order value (\$)</label>
+          <input type="number" id="aov" value="140" step="5" min="20">
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="row">
+        <div class="pill-badge">Clicks: <span id="calcClicks">-</span></div>
+        <div class="pill-badge">Leads: <span id="calcLeads">-</span></div>
+        <div class="pill-badge">Revenue: <span id="calcRevenue">-</span></div>
+        <div class="pill-badge">ROI: <span id="calcROI">-</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="section-inner">
+      <div class="row" style="justify-content:space-between;align-items:center;">
+        <h2>What we do</h2>
+        <div class="badge">Strategy → Creative → Analytics → Iteration</div>
+      </div>
+      <div class="grid cards-3">
+        <div class="card">
+          <div class="services-icon">🎯</div>
+          <h3>Paid Media</h3>
+          <p class="muted">High-intent campaigns across search, social, and display with tight tracking.</p>
+          <ul class="muted mini">
+            <li>Offer & funnel mapping</li>
+            <li>Audience + keyword intelligence</li>
+            <li>Creative experimentation</li>
+            <li>Budget pacing guardrails</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="services-icon">🧭</div>
+          <h3>SEO & Content</h3>
+          <p class="muted">Technical soundness plus authority-building content built to convert.</p>
+          <ul class="muted mini">
+            <li>Technical audits & fixes</li>
+            <li>Topic clusters & briefs</li>
+            <li>On-page CRO alignment</li>
+            <li>Schema & rich results</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="services-icon">🧪</div>
+          <h3>CRO & Analytics</h3>
+          <p class="muted">Frictionless journeys with evidence-driven experimentation.</p>
+          <ul class="muted mini">
+            <li>Experiment design & QA</li>
+            <li>Landing page sprints</li>
+            <li>Event & funnel tracking</li>
+            <li>Reporting you’ll read</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="portfolio">
+    <div class="section-inner">
+      <div class="row" style="justify-content:space-between;align-items:center;">
+        <h2>Case studies</h2>
+        <div class="row" id="caseFilters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="b2b">B2B</button>
+          <button class="filter-btn" data-filter="ecom">E-commerce</button>
+          <button class="filter-btn" data-filter="saas">SaaS</button>
+        </div>
+      </div>
+      <div class="portfolio-grid" id="caseGrid">
+        <div class="card" data-cat="b2b">
+          <div class="tag">B2B · Paid Search</div>
+          <h4>Industrial SaaS pipeline +218%</h4>
+          <p class="muted mini">Rebuilt intent structure, added layered negatives, and CRO’d lead forms.</p>
+          <div class="kpi-row">
+            <div class="kpi">CPL -42%</div>
+            <div class="kpi">SQLs +2.3x</div>
+            <div class="kpi">ROAS +68%</div>
+          </div>
+        </div>
+        <div class="card" data-cat="ecom">
+          <div class="tag">E-com · Paid Social</div>
+          <h4>DTC skincare MER to 3.1</h4>
+          <p class="muted mini">Creative iteration loops with UGC angles and PDP optimizations.</p>
+          <div class="kpi-row">
+            <div class="kpi">CTR +54%</div>
+            <div class="kpi">CVR +28%</div>
+            <div class="kpi">AOV +12%</div>
+          </div>
+        </div>
+        <div class="card" data-cat="saas">
+          <div class="tag">SaaS · SEO</div>
+          <h4>Organic trials +164%</h4>
+          <p class="muted mini">Technical clean-up, schema, and intent-aligned comparison pages.</p>
+          <div class="kpi-row">
+            <div class="kpi">Top 3 kws +41</div>
+            <div class="kpi">Bounce -18%</div>
+            <div class="kpi">Trials +164%</div>
+          </div>
+        </div>
+        <div class="card" data-cat="b2b">
+          <div class="tag">B2B · CRO</div>
+          <h4>Form conversion +52%</h4>
+          <p class="muted mini">Reduced steps, added social proof near CTA, and tested offer variants.</p>
+          <div class="kpi-row">
+            <div class="kpi">CVR +52%</div>
+            <div class="kpi">Time to lead -30%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tools">
+    <div class="section-inner">
+      <h2>Growth tools</h2>
+      <div class="grid cards-3">
+        <div class="card">
+          <div class="label">UTM Builder</div>
+          <div class="form-grid">
+            <div><label class="muted mini">Base URL</label><input id="utmUrl" placeholder="https://example.com"></div>
+            <div><label class="muted mini">Source</label><input id="utmSrc" placeholder="google"></div>
+            <div><label class="muted mini">Medium</label><input id="utmMed" placeholder="cpc"></div>
+            <div><label class="muted mini">Campaign</label><input id="utmCamp" placeholder="spring_launch"></div>
+            <div><label class="muted mini">Term</label><input id="utmTerm" placeholder="keyword"></div>
+            <div><label class="muted mini">Content</label><input id="utmContent" placeholder="ad_variant_a"></div>
+          </div>
+          <div class="divider"></div>
+          <button class="btn btn-primary" id="buildUtm">Build UTM URL</button>
+          <div class="output-box" id="utmResult">Your tagged URL will appear here.</div>
+        </div>
+
+        <div class="card">
+          <div class="label">SEO audit checklist</div>
+          <p class="muted mini">Mark items done to see readiness.</p>
+          <div id="auditList" class="muted mini" style="display:grid;gap:8px;">
+            <label><input type="checkbox" class="audit"> Title tags under 60 chars</label>
+            <label><input type="checkbox" class="audit"> Meta descriptions present</label>
+            <label><input type="checkbox" class="audit"> H1 unique per page</label>
+            <label><input type="checkbox" class="audit"> Core Web Vitals green</label>
+            <label><input type="checkbox" class="audit"> Schema implemented</label>
+            <label><input type="checkbox" class="audit"> XML sitemap clean</label>
+            <label><input type="checkbox" class="audit"> No 4xx in main crawl</label>
+          </div>
+          <div class="divider"></div>
+          <div class="muted mini">Readiness</div>
+          <div class="progress"><div id="auditProgress"></div></div>
+          <div class="muted" id="auditScore">0% complete</div>
+        </div>
+
+        <div class="card">
+          <div class="label">Content calendar (7 days)</div>
+          <div class="form-grid">
+            <div>
+              <label class="muted mini">Primary objective</label>
+              <select id="calObjective">
+                <option value="lead-gen">Lead generation</option>
+                <option value="awareness">Brand awareness</option>
+                <option value="retention">Retention</option>
+              </select>
+            </div>
+            <div>
+              <label class="muted mini">Tone</label>
+              <select id="calTone">
+                <option value="expert">Expert</option>
+                <option value="friendly">Friendly</option>
+                <option value="bold">Bold</option>
+              </select>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <button class="btn btn-primary" id="genCalendar">Generate plan</button>
+          <ul id="calendarList" class="muted mini" style="padding-left:18px; margin-top:10px;"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="section-inner">
+      <div class="row" style="justify-content:space-between;align-items:center;">
+        <h2>Calculators</h2>
+        <div class="badge">Fast estimates · No email required</div>
+      </div>
+      <div class="grid cards-3">
+        <div class="card">
+          <div class="label">ROI calculator</div>
+          <div class="form-grid">
+            <div><label class="muted mini">Spend (\$)</label><input type="number" id="roiSpend" value="8000"></div>
+            <div><label class="muted mini">Revenue (\$)</label><input type="number" id="roiRev" value="24000"></div>
+            <div><label class="muted mini">Gross margin (%)</label><input type="number" id="roiMargin" value="62"></div>
+          </div>
+          <div class="divider"></div>
+          <button class="btn btn-primary" id="calcRoiBtn">Calculate</button>
+          <div class="output-box" id="roiOutput">Enter values to see ROI.</div>
+        </div>
+
+        <div class="card">
+          <div class="label">Performance scorer</div>
+          <p class="muted mini">Rate 1-5 across pillars.</p>
+          <div class="form-grid">
+            <div><label class="muted mini">Creative</label><input type="number" id="scCreative" min="1" max="5" value="4"></div>
+            <div><label class="muted mini">Targeting</label><input type="number" id="scTarget" min="1" max="5" value="3"></div>
+            <div><label class="muted mini">Tracking</label><input type="number" id="scTracking" min="1" max="5" value="4"></div>
+            <div><label class="muted mini">CRO</label><input type="number" id="scCRO" min="1" max="5" value="3"></div>
+          </div>
+          <div class="divider"></div>
+          <button class="btn btn-primary" id="scoreBtn">Score</button>
+          <div class="output-box" id="scoreOutput">Your score will appear here.</div>
+        </div>
+
+        <div class="card">
+          <div class="label">Read-time for posts</div>
+          <p class="muted mini">We use 200 wpm baseline.</p>
+          <div id="blogList" class="muted mini" style="display:grid;gap:8px;">
+            <div data-words="640">AI in ad copy: 640 words · <span class="tag readtime"></span></div>
+            <div data-words="980">Zero-party data playbook: 980 words · <span class="tag readtime"></span></div>
+            <div data-words="430">Landing page wins: 430 words · <span class="tag readtime"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="section-inner">
+      <div class="row" style="justify-content:space-between;align-items:center;">
+        <h2>FAQ</h2>
+        <div class="pill">Transparent answers</div>
+      </div>
+      <div id="faqWrap">
+        <div class="faq-item">
+          <button class="faq-q">How soon can we launch?</button>
+          <div class="faq-a">Typical launch is 10-14 days including tracking QA and creative set.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Do you handle tracking?</button>
+          <div class="faq-a">Yes—GA4, pixels, CAPI where applicable, and server-side tagging options.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">What budgets do you work with?</button>
+          <div class="faq-a">We’re effective from \$8k/mo and scale to multi-six-figure monthly spends.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials">
+    <div class="section-inner testimonials">
+      <div class="row" style="justify-content:space-between;align-items:center;">
+        <h2>Client words</h2>
+        <div class="pill">Proof over promises</div>
+      </div>
+      <div id="testimonialSlides">
+        <div class="card testimonial active">
+          <p>"They built a pipeline engine, not just ads. Weekly insights we actually use."</p>
+          <div class="muted mini">— COO, B2B SaaS</div>
+        </div>
+        <div class="card testimonial">
+          <p>"Creative refreshes every week kept CAC predictable while we scaled."</p>
+          <div class="muted mini">— Founder, DTC skincare</div>
+        </div>
+        <div class="card testimonial">
+          <p>"Their CRO discipline finally made our traffic worth paying for."</p>
+          <div class="muted mini">— VP Growth, Marketplace</div>
+        </div>
+      </div>
+      <div class="dots" id="dots"></div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="section-inner">
+      <div class="row" style="justify-content:space-between;align-items:center;">
+        <h2>90-day roadmap</h2>
+        <div class="badge">Momentum from week 1</div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item"><strong>Week 1-2:</strong> Discovery, tracking QA, baseline reporting.</div>
+        <div class="tl-item"><strong>Week 3-4:</strong> Launch paid campaigns, initial CRO tests.</div>
+        <div class="tl-item"><strong>Week 5-8:</strong> Creative iterations, keyword sculpting, schema.</div>
+        <div class="tl-item"><strong>Week 9-12:</strong> Scale winners, multi-page CRO, LTV angles.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-inner">
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
+        <div class="card">
+          <div class="label">Say hello</div>
+          <p class="muted mini">Tell us about your goals. We’ll reply with a tailored plan.</p>
+          <div class="form-grid">
+            <div><input id="cName" placeholder="Name"></div>
+            <div><input id="cEmail" placeholder="Email"></div>
+          </div>
+          <textarea id="cMsg" placeholder="What are you looking to achieve?"></textarea>
+          <div class="divider"></div>
+          <button class="btn btn-primary" id="sendMsg">Send</button>
+          <div class="muted mini" id="contactStatus"></div>
+        </div>
+        <div class="card">
+          <div class="label">Newsletter</div>
+          <p class="muted mini">Monthly breakdowns of what’s working in paid + SEO.</p>
+          <div class="row">
+            <input id="nEmail" placeholder="you@example.com" style="flex:1;">
+            <button class="btn btn-ghost" id="subBtn">Subscribe</button>
+          </div>
+          <div class="muted mini" id="subStatus"></div>
+          <div class="divider"></div>
+          <div class="label">Live metrics</div>
+          <div class="kpi-row">
+            <div class="kpi">CTR lift <span class="counter" data-target="38">0%</span></div>
+            <div class="kpi">CPA drop <span class="counter" data-target="27">0%</span></div>
+            <div class="kpi">Time-to-test <span class="counter" data-target="5">0d</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize EmailJS public key when DOM is ready (fallback to window load)
+  if (window.emailjs && emailjs.init) {
+    emailjs.init("LinwSk882_KUV1_-W");
+  } else {
+    window.addEventListener('load', () => { if (window.emailjs && emailjs.init) emailjs.init("LinwSk882_KUV1_-W"); });
+  }
+  const body = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', () => {
+    const next = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    body.setAttribute('data-theme', next);
+    themeToggle.textContent = next === 'light' ? '🌙' : '☀️';
+  });
+
+  // Smooth scroll buttons
+  document.getElementById('scrollServices').onclick = () => document.getElementById('services').scrollIntoView({behavior:'smooth'});
+  document.getElementById('scrollContact').onclick = () => document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+
+  // Animated counters
+  const counters = document.querySelectorAll('.counter');
+  counters.forEach(counter => {
+    const target = +counter.dataset.target;
+    const suffix = counter.textContent.replace(/[0-9]/g,'');
+    counter.textContent = '0' + suffix;
+    const duration = 900;
+    const start = performance.now();
+    function step(ts) {
+      const progress = Math.min((ts - start) / duration, 1);
+      const val = Math.floor(progress * target);
+      counter.textContent = val + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+
+  // Hero ROI snapshot calculator (live)
+  const spend = document.getElementById('spend');
+  const cpc = document.getElementById('cpc');
+  const cvr = document.getElementById('cvr');
+  const aov = document.getElementById('aov');
+  const calcClicks = document.getElementById('calcClicks');
+  const calcLeads = document.getElementById('calcLeads');
+  const calcRevenue = document.getElementById('calcRevenue');
+  const calcROI = document.getElementById('calcROI');
+  function updateHeroCalc() {
+    const s = Math.max(+spend.value || 0, 0);
+    const cp = Math.max(+cpc.value || 0, 0.01);
+    const cv = Math.max(+cvr.value || 0, 0);
+    const av = Math.max(+aov.value || 0, 0);
+    const clicks = s / cp;
+    const leads = clicks * (cv/100);
+    const revenue = leads * av;
+    const roi = s > 0 ? ((revenue - s)/s)*100 : 0;
+    calcClicks.textContent = Math.round(clicks).toLocaleString();
+    calcLeads.textContent = Math.round(leads).toLocaleString();
+    calcRevenue.textContent = '$' + Math.round(revenue).toLocaleString();
+    calcROI.textContent = (roi>=0?'+':'') + roi.toFixed(1) + '%';
+  }
+  [spend,cpc,cvr,aov].forEach(el => el.addEventListener('input', updateHeroCalc));
+  updateHeroCalc();
+
+  // Case filter
+  const filterBtns = document.querySelectorAll('#caseFilters .filter-btn');
+  const cases = document.querySelectorAll('#caseGrid .card');
+  filterBtns.forEach(btn => btn.addEventListener('click', () => {
+    filterBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.filter;
+    cases.forEach(card => {
+      const show = cat === 'all' || card.dataset.cat === cat;
+      card.style.display = show ? 'block' : 'none';
+    });
+  }));
+
+  // UTM builder
+  const buildUtm = document.getElementById('buildUtm');
+  buildUtm.addEventListener('click', () => {
+    const base = document.getElementById('utmUrl').value.trim();
+    if (!base) { document.getElementById('utmResult').textContent = 'Please enter a base URL.'; return; }
+    const params = new URLSearchParams();
+    const src = document.getElementById('utmSrc').value.trim();
+    const med = document.getElementById('utmMed').value.trim();
+    const camp = document.getElementById('utmCamp').value.trim();
+    const term = document.getElementById('utmTerm').value.trim();
+    const content = document.getElementById('utmContent').value.trim();
+    if (src) params.set('utm_source', src);
+    if (med) params.set('utm_medium', med);
+    if (camp) params.set('utm_campaign', camp);
+    if (term) params.set('utm_term', term);
+    if (content) params.set('utm_content', content);
+    const sep = base.includes('?') ? '&' : '?';
+    const url = base + (params.toString()? sep + params.toString() : '');
+    document.getElementById('utmResult').textContent = url;
+  });
+
+  // SEO audit progress
+  const audits = document.querySelectorAll('.audit');
+  const auditProgress = document.getElementById('auditProgress');
+  const auditScore = document.getElementById('auditScore');
+  function updateAudit() {
+    const total = audits.length;
+    const done = [...audits].filter(a=>a.checked).length;
+    const pct = Math.round((done/total)*100);
+    auditProgress.style.width = pct + '%';
+    auditScore.textContent = pct + '% complete';
+  }
+  audits.forEach(a => a.addEventListener('change', updateAudit));
+  updateAudit();
+
+  // Content calendar generator
+  const objectiveMap = {
+    'lead-gen': ['Lead magnet post', 'Case study carousel', 'Webinar invite', 'Comparison page teaser', 'Testimonial reel', 'How-to thread', 'Retargeting offer'],
+    'awareness': ['Founder story', 'Behind-the-scenes', 'Industry insight', 'Myth vs fact', 'Lightweight demo', 'Trend reaction', 'Value carousel'],
+    'retention': ['Pro tips email', 'Feature spotlight', 'Customer highlight', 'How we built it', 'Changelog recap', 'FAQ roundup', 'Power user workflow']
+  };
+  const toneMap = {
+    'expert': 'Authoritative, specific takeaway.',
+    'friendly': 'Warm, helpful, easy to act on.',
+    'bold': 'Direct, high-energy, memorable.'
+  };
+  document.getElementById('genCalendar').addEventListener('click', () => {
+    const obj = document.getElementById('calObjective').value;
+    const tone = document.getElementById('calTone').value;
+    const list = document.getElementById('calendarList');
+    list.innerHTML = '';
+    const items = objectiveMap[obj] || [];
+    items.slice(0,7).forEach((item, i) => {
+      const li = document.createElement('li');
+      li.textContent = `Day ${i+1}: ${item} · Tone: ${toneMap[tone]}`;
+      list.appendChild(li);
+    });
+  });
+
+  // ROI calculator (separate)
+  document.getElementById('calcRoiBtn').addEventListener('click', () => {
+    const s = Math.max(+document.getElementById('roiSpend').value||0,0);
+    const r = Math.max(+document.getElementById('roiRev').value||0,0);
+    const m = Math.min(Math.max(+document.getElementById('roiMargin').value||0,0),100);
+    const profit = r*(m/100) - s;
+    const roi = s>0 ? (profit/s)*100 : 0;
+    document.getElementById('roiOutput').textContent =
+      `Gross profit: \$${Math.round(profit).toLocaleString()} · ROI: ${(roi>=0?'+':'')}${roi.toFixed(1)}%`;
+  });
+
+  // Performance scorer
+  document.getElementById('scoreBtn').addEventListener('click', () => {
+    const vals = ['scCreative','scTarget','scTracking','scCRO'].map(id => {
+      const v = Math.min(Math.max(+document.getElementById(id).value||0,1),5);
+      document.getElementById(id).value = v;
+      return v;
+    });
+    const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+    let tier = 'Foundations set';
+    if (avg >=4.5) tier = 'Elite';
+    else if (avg >=4) tier = 'Strong';
+    else if (avg >=3) tier = 'Promising';
+    document.getElementById('scoreOutput').textContent = `Score: ${avg.toFixed(1)}/5 · Tier: ${tier}`;
+  });
+
+  // Read time
+  document.querySelectorAll('#blogList [data-words]').forEach(el => {
+    const words = +el.dataset.words;
+    const mins = Math.max(1, Math.ceil(words/200));
+    el.querySelector('.readtime').textContent = `${mins} min read`;
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach((q, idx) => {
+    q.addEventListener('click', () => {
+      const ans = q.nextElementSibling;
+      const open = ans.classList.contains('show');
+      document.querySelectorAll('.faq-a').forEach(a=>a.classList.remove('show'));
+      if (!open) ans.classList.add('show');
+    });
+  });
+
+  // Testimonials carousel
+  const slides = document.querySelectorAll('.testimonial');
+  const dotsWrap = document.getElementById('dots');
+  slides.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className='dot'+(i===0?' active':'');
+    d.dataset.index=i;
+    dotsWrap.appendChild(d);
+  });
+  let current = 0;
+  function showSlide(i){
+    slides.forEach(s=>s.classList.remove('active'));
+    dotsWrap.querySelectorAll('.dot').forEach(d=>d.classList.remove('active'));
+    slides[i].classList.add('active');
+    dotsWrap.querySelectorAll('.dot')[i].classList.add('active');
+    current = i;
+  }
+  dotsWrap.addEventListener('click', e=>{
+    if(e.target.classList.contains('dot')) showSlide(+e.target.dataset.index);
+  });
+  setInterval(()=>{ showSlide((current+1)%slides.length); }, 4800);
+
+  // Contact validation
+  // Contact form with EmailJS
+document.getElementById('sendMsg').addEventListener('click', () => {
+
+  const name = document.getElementById('cName').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  const msg = document.getElementById('cMsg').value.trim();
+  const status = document.getElementById('contactStatus');
+
+  if (!name || !email || !msg) {
+    status.textContent = 'Please fill all fields.';
+    return;
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    status.textContent = 'Enter a valid email.';
+    return;
+  }
+
+  status.textContent = 'Sending...';
+  status.style.color = '';
+  const templateParams = { name: name, email: email, message: msg };
+  console.log('EmailJS: sending with', {
+    service: 'service_xo44btc',
+    template: 'template_xujytpf',
+    templateParams: templateParams,
+    publicKey: 'LinwSk882_KUV1_-W'
+  });
+
+  emailjs.send(
+    'service_xo44btc',
+    'template_xujytpf',
+    templateParams,
+    'LinwSk882_KUV1_-W'
+  ).then((response) => {
+    console.log('EmailJS: send success', response);
+    status.textContent = 'Message sent successfully!';
+    status.style.color = 'green';
+
+    document.getElementById('cName').value = '';
+    document.getElementById('cEmail').value = '';
+    document.getElementById('cMsg').value = '';
+  }).catch((err) => {
+    console.error('EmailJS: send error', err);
+    status.textContent = 'Failed to send message. Check console for details.';
+    status.style.color = 'red';
+  });
+
+});
+      
+
+  // Newsletter validation
+  document.getElementById('subBtn').addEventListener('click', () => {
+    const email = document.getElementById('nEmail').value.trim();
+    const status = document.getElementById('subStatus');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { status.textContent = 'Enter a valid email.'; return; }
+    status.textContent = 'Subscribed! See you in the next drop.';
+  });
+});
+
+</script>
+</body>
+</html>
